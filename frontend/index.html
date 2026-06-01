@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexPlay - Recomendações Inteligentes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="glass-background"></div>
+    
+    <nav class="navbar">
+        <div class="logo">Nex<span>Play</span></div>
+        <div class="nav-links">
+            <button class="nav-btn active" id="navHome">Início & Recomendações</button>
+            <button class="nav-btn" id="navWishlist">Lista de Desejos (<span id="wishlistCount">0</span>)</button>
+        </div>
+        <div class="user-profile">
+            <select id="userSelect">
+                <option value="1">João Silva (Fã de Soulslike)</option>
+                <option value="2">Maria Oliveira (Fã de Shooters)</option>
+                <option value="3">Carlos Souza (Fã de Narrativa)</option>
+            </select>
+            <div class="avatar"></div>
+        </div>
+    </nav>
+
+    <main class="container" id="mainView">
+        <!-- Section: Registrar Histórico (RF02, RF03) -->
+        <section class="panel history-panel glass-panel">
+            <h2>Seu Histórico de Jogos</h2>
+            <p>Avalie os jogos que você já jogou para melhorarmos suas recomendações.</p>
+            
+            <form id="historyForm" class="history-form">
+                <select id="gameSelect">
+                    <option value="1">Sekiro: Shadows Die Twice</option>
+                    <option value="2">Resident Evil</option>
+                    <option value="3">Project Zomboid</option>
+                    <option value="4">Counter-Strike 2</option>
+                    <option value="5">Warframe</option>
+                    <option value="6">Lies of P</option>
+                    <option value="13">The Witcher 3: Wild Hunt</option>
+                    <option value="14">Bloodborne</option>
+                    <option value="15">Overwatch 2</option>
+                    <option value="16">Valorant</option>
+                    <option value="17">The Last of Us Part I</option>
+                    <option value="18">God of War Ragnarök</option>
+                    <option value="19">Dark Souls III</option>
+                    <option value="20">Cyberpunk 2077</option>
+                    <option value="21">Apex Legends</option>
+                    <option value="22">Until Dawn</option>
+                    <option value="23">Red Dead Redemption 2</option>
+                    <option value="24">Ghost of Tsushima</option>
+                    <option value="25">Hades</option>
+                    <option value="26">Mass Effect Legendary Edition</option>
+                    <option value="27">Destiny 2</option>
+                    <option value="28">The Elder Scrolls V: Skyrim</option>
+                    <option value="29">Doom Eternal</option>
+                    <option value="30">Persona 5 Royal</option>
+                    <option value="31">Star Wars Jedi: Survivor</option>
+                    <option value="32">Baldur's Gate 3</option>
+                </select>
+                <input type="number" id="ratingInput" min="0" max="5" step="0.5" placeholder="Nota (0-5)" required>
+                <button type="submit" class="btn primary-btn">Avaliar Jogo</button>
+            </form>
+
+            <div class="history-list" id="historyList">
+                <!-- Itens inseridos via JS -->
+            </div>
+        </section>
+
+        <!-- Section: Recomendações da IA (RF04, RF07) -->
+        <section class="panel recommendations-panel glass-panel">
+            <div class="rec-header">
+                <h2>Recomendações da IA <span class="badge" id="updateCounter">10 updates restantes</span></h2>
+                <button class="btn secondary-btn" id="generateRecBtn">Gerar Novas</button>
+            </div>
+
+            <!-- Filtros (RF05) -->
+            <div class="filters">
+                <button class="filter-btn active" data-genre="Todos">Todos</button>
+                <button class="filter-btn" data-genre="Ação">Ação</button>
+                <button class="filter-btn" data-genre="RPG">RPG</button>
+                <button class="filter-btn" data-genre="Hero Shooter">Hero Shooter</button>
+                <button class="filter-btn" data-genre="Narrativo">Narrativo</button>
+            </div>
+
+            <div class="recommendations-grid" id="recommendationsGrid">
+                <!-- Recomendações preenchidas via JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Section: Lista de Desejos -->
+    <main class="container" id="wishlistView" style="display: none;">
+        <section class="panel glass-panel" style="grid-column: 1 / -1;">
+            <h2>Sua Lista de Desejos</h2>
+            <p>Jogos que você tem interesse e separou para jogar depois.</p>
+            <div class="recommendations-grid" id="wishlistGrid">
+                <!-- Itens preenchidos via JS -->
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
