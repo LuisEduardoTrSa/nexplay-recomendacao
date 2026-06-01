@@ -27,7 +27,6 @@
     </nav>
 
     <main class="container" id="mainView">
-        <!-- Section: Registrar Histórico (RF02, RF03) -->
         <section class="panel history-panel glass-panel">
             <h2>Seu Histórico de Jogos</h2>
             <p>Avalie os jogos que você já jogou para melhorarmos suas recomendações.</p>
@@ -66,18 +65,15 @@
             </form>
 
             <div class="history-list" id="historyList">
-                <!-- Itens inseridos via JS -->
             </div>
         </section>
 
-        <!-- Section: Recomendações da IA (RF04, RF07) -->
         <section class="panel recommendations-panel glass-panel">
             <div class="rec-header">
                 <h2>Recomendações da IA <span class="badge" id="updateCounter">10 updates restantes</span></h2>
                 <button class="btn secondary-btn" id="generateRecBtn">Gerar Novas</button>
             </div>
 
-            <!-- Filtros (RF05) -->
             <div class="filters">
                 <button class="filter-btn active" data-genre="Todos">Todos</button>
                 <button class="filter-btn" data-genre="Ação">Ação</button>
@@ -87,18 +83,15 @@
             </div>
 
             <div class="recommendations-grid" id="recommendationsGrid">
-                <!-- Recomendações preenchidas via JS -->
             </div>
         </section>
     </main>
 
-    <!-- Section: Lista de Desejos -->
     <main class="container" id="wishlistView" style="display: none;">
         <section class="panel glass-panel" style="grid-column: 1 / -1;">
             <h2>Sua Lista de Desejos</h2>
             <p>Jogos que você tem interesse e separou para jogar depois.</p>
             <div class="recommendations-grid" id="wishlistGrid">
-                <!-- Itens preenchidos via JS -->
             </div>
         </section>
     </main>

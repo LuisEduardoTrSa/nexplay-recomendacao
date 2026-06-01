@@ -1,4 +1,3 @@
-// Catálogo completo de jogos (simulando o banco de dados)
 const catalogoJogos = [
     { id: 1, title: 'Sekiro: Shadows Die Twice', genre: 'Ação', tags: 'Soulslike, Ninja, Stealth', dificuldade: true, multiplayer: false, narrativa: false },
     { id: 2, title: 'Resident Evil', genre: 'Ação', tags: 'Horror, Zumbis, Puzzle', dificuldade: false, multiplayer: false, narrativa: false },
@@ -34,14 +33,12 @@ const catalogoJogos = [
     { id: 32, title: "Baldur's Gate 3", genre: 'RPG', tags: 'Fantasia, História, Escolhas, Co-op', dificuldade: false, multiplayer: true, narrativa: true }
 ];
 
-// Dados dos usuários
 const mockUsers = {
     1: { name: 'João Silva', history: [{gameId: 1, title: 'Sekiro: Shadows Die Twice', rating: 5}, {gameId: 6, title: 'Lies of P', rating: 4.5}], perfil: 'soulslike' },
     2: { name: 'Maria Oliveira', history: [{gameId: 4, title: 'Counter-Strike 2', rating: 5}, {gameId: 5, title: 'Warframe', rating: 4.0}], perfil: 'multiplayer' },
     3: { name: 'Carlos Souza', history: [{gameId: 9, title: 'The Walking Dead', rating: 5}, {gameId: 10, title: "JoJo's Bizarre Adventure", rating: 4.0}], perfil: 'narrativo' }
 };
 
-// IDs de jogos já jogados por cada usuário
 const jogosJogados = {
     1: [1, 6],
     2: [4, 5],
@@ -54,50 +51,37 @@ let updateLimits = { 1: 10, 2: 10, 3: 10 };
 let userWishlist = { 1: [], 2: [], 3: [] };
 let currentRecommendations = { 1: [], 2: [], 3: [] };
 
-// ========================
-// MOTOR DE RECOMENDAÇÃO (Simulação do Python no Frontend)
-// ========================
 function gerarRecomendacoes(userId) {
     const user = mockUsers[userId];
     const jogados = jogosJogados[userId];
 
-    // Jogos que o usuário AINDA NÃO jogou
     let candidatos = catalogoJogos.filter(j => !jogados.includes(j.id));
 
-    // Calcula score para cada candidato com base no perfil + regras de negócio
     candidatos = candidatos.map(jogo => {
-        let score = Math.random() * 40 + 30; // Base aleatória entre 30-70
+        let score = Math.random() * 40 + 30;
 
-        // RN1: Se perfil é multiplayer rápido → +30% para shooters/multiplayer
         if (user.perfil === 'multiplayer' && (jogo.multiplayer || jogo.genre === 'Hero Shooter')) {
             score *= 1.3;
         }
 
-        // RN2: Se perfil é soulslike/dificuldade → prioriza dificuldade elevada
         if (user.perfil === 'soulslike' && (jogo.dificuldade || jogo.tags.includes('Soulslike'))) {
             score *= 1.25;
         }
 
-        // RN3: Se perfil é narrativo → prioriza QTE, História, Adaptações
         if (user.perfil === 'narrativo' && (jogo.narrativa || jogo.tags.includes('QTE') || jogo.tags.includes('História') || jogo.genre === 'Narrativo')) {
             score *= 1.25;
         }
 
-        // Variação aleatória leve para gerar listas diferentes a cada clique
         score += (Math.random() - 0.5) * 15;
         score = Math.min(99, Math.max(10, Math.round(score)));
 
         return { id: jogo.id, title: jogo.title, genre: jogo.genre, tags: jogo.tags, score };
     });
 
-    // Ordena por score decrescente e pega os top 5
     candidatos.sort((a, b) => b.score - a.score);
     return candidatos.slice(0, 5);
 }
 
-// ========================
-// ELEMENTOS DO DOM
-// ========================
 const userSelect = document.getElementById('userSelect');
 const historyList = document.getElementById('historyList');
 const recommendationsGrid = document.getElementById('recommendationsGrid');
@@ -113,9 +97,6 @@ const wishlistView = document.getElementById('wishlistView');
 const wishlistGrid = document.getElementById('wishlistGrid');
 const wishlistCount = document.getElementById('wishlistCount');
 
-// ========================
-// FUNÇÕES DE RENDERIZAÇÃO
-// ========================
 function init() {
     for (let uid of [1, 2, 3]) {
         currentRecommendations[uid] = gerarRecomendacoes(uid);
@@ -200,11 +181,6 @@ function renderWishlist() {
     `).join('');
 }
 
-// ========================
-// EVENT LISTENERS
-// ========================
-
-// Navegação entre abas
 navHome.addEventListener('click', () => {
     navHome.classList.add('active');
     navWishlist.classList.remove('active');
@@ -219,7 +195,6 @@ navWishlist.addEventListener('click', () => {
     wishlistView.style.display = 'grid';
 });
 
-// Wishlist
 window.addToWishlist = function(gameId) {
     const game = catalogoJogos.find(j => j.id === gameId);
     if (!userWishlist[currentUser].find(g => g.id === gameId)) {
@@ -237,23 +212,15 @@ window.removeFromWishlist = function(gameId) {
 };
 
 window.removeHistoryItem = function(gameId) {
-    // Confirmação simples
     if (confirm("Tem certeza que deseja remover este jogo do seu histórico? Isso mudará suas recomendações.")) {
-        // Remove do histórico
         mockUsers[currentUser].history = mockUsers[currentUser].history.filter(h => h.gameId !== gameId);
-        
-        // Remove de jogos jogados
         jogosJogados[currentUser] = jogosJogados[currentUser].filter(id => id !== gameId);
-        
-        // Regenera recomendações
         currentRecommendations[currentUser] = gerarRecomendacoes(currentUser);
-        
         renderHistory();
         renderRecommendations();
     }
 };
 
-// Troca de Usuário
 userSelect.addEventListener('change', (e) => {
     currentUser = parseInt(e.target.value);
     updateCounter.innerText = `${updateLimits[currentUser]} updates restantes`;
@@ -262,7 +229,6 @@ userSelect.addEventListener('change', (e) => {
     renderWishlist();
 });
 
-// Filtros de gênero
 filterBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
         filterBtns.forEach(b => b.classList.remove('active'));
@@ -272,13 +238,11 @@ filterBtns.forEach(btn => {
     });
 });
 
-// Gerar Novas Recomendações (RF08 + RN4)
 generateRecBtn.addEventListener('click', () => {
     if (updateLimits[currentUser] > 0) {
         updateLimits[currentUser]--;
         updateCounter.innerText = `${updateLimits[currentUser]} updates restantes`;
 
-        // Simular carregamento da IA
         generateRecBtn.innerText = 'Processando IA...';
         generateRecBtn.disabled = true;
         recommendationsGrid.innerHTML = `
@@ -289,7 +253,6 @@ generateRecBtn.addEventListener('click', () => {
         `;
 
         setTimeout(() => {
-            // Gera uma NOVA lista com scores e ordem diferentes
             currentRecommendations[currentUser] = gerarRecomendacoes(currentUser);
             renderRecommendations();
             generateRecBtn.innerText = 'Gerar Novas';
@@ -300,7 +263,6 @@ generateRecBtn.addEventListener('click', () => {
     }
 });
 
-// Avaliar Jogo (adiciona ao histórico e remove das recomendações)
 historyForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const select = document.getElementById('gameSelect');
@@ -308,14 +270,12 @@ historyForm.addEventListener('submit', (e) => {
     const title = select.options[select.selectedIndex].text;
     const rating = parseFloat(document.getElementById('ratingInput').value);
 
-    // Adiciona ao histórico
     mockUsers[currentUser].history.push({ gameId, title, rating });
 
     if (!jogosJogados[currentUser].includes(gameId)) {
         jogosJogados[currentUser].push(gameId);
     }
 
-    // Regenera recomendações para refletir o novo histórico
     currentRecommendations[currentUser] = gerarRecomendacoes(currentUser);
 
     renderHistory();

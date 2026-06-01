@@ -104,7 +104,6 @@ select {
     outline: none;
 }
 
-/* Fix option colors to not merge with browser default white background */
 select option {
     background: var(--bg-color);
     color: var(--text-main);

@@ -1,5 +1,3 @@
--- Criação das tabelas
-
 CREATE TABLE IF NOT EXISTS usuarios (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome VARCHAR(100) NOT NULL,
@@ -14,14 +12,14 @@ CREATE TABLE IF NOT EXISTS jogos (
     dificuldade_elevada BOOLEAN DEFAULT 0,
     multiplayer_rapido BOOLEAN DEFAULT 0,
     adaptacao_narrativa BOOLEAN DEFAULT 0,
-    tags TEXT -- Tags separadas por vírgula para ajudar na filtragem por conteúdo
+    tags TEXT
 );
 
 CREATE TABLE IF NOT EXISTS historico_avaliacoes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     usuario_id INTEGER,
     jogo_id INTEGER,
-    nota REAL NOT NULL, -- Nota de 0.0 a 5.0 ou 0 a 10
+    nota REAL NOT NULL,
     data_avaliacao DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
     FOREIGN KEY (jogo_id) REFERENCES jogos(id)
@@ -34,7 +32,6 @@ CREATE TABLE IF NOT EXISTS log_requisicoes_ia (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 
--- Mock Data (Inserindo Jogos)
 INSERT INTO jogos (titulo, genero, dificuldade_elevada, multiplayer_rapido, adaptacao_narrativa, tags) VALUES
 ('Sekiro: Shadows Die Twice', 'Ação', 1, 0, 0, 'Soulslike,Single Player,Ninja,Stealth'),
 ('Resident Evil', 'Ação', 0, 0, 0, 'Horror,Zumbis,Single Player,Puzzle'),
@@ -69,26 +66,19 @@ INSERT INTO jogos (titulo, genero, dificuldade_elevada, multiplayer_rapido, adap
 ('Star Wars Jedi: Survivor', 'Ação', 1, 0, 1, 'Soulslike,Ficção Científica,Single Player,Adaptação'),
 ('Baldur''s Gate 3', 'RPG', 0, 0, 1, 'Fantasia,História,Escolhas,Co-op');
 
--- Mock Data (Inserindo Usuários)
 INSERT INTO usuarios (nome, email) VALUES
 ('João Silva', 'joao@example.com'),
 ('Maria Oliveira', 'maria@example.com'),
 ('Carlos Souza', 'carlos@example.com');
 
--- Mock Data (Inserindo Histórico de Avaliações)
--- João gosta muito de jogos difíceis e soulslike (Ativa RN2)
 INSERT INTO historico_avaliacoes (usuario_id, jogo_id, nota) VALUES
-(1, 1, 5.0), -- Sekiro
-(1, 6, 4.5); -- Lies of P
+(1, 1, 5.0),
+(1, 6, 4.5);
 
--- Maria gosta de jogos rápidos multiplayer (Ativa RN1)
 INSERT INTO historico_avaliacoes (usuario_id, jogo_id, nota) VALUES
-(2, 4, 5.0), -- CS2
-(2, 5, 4.0); -- Warframe
+(2, 4, 5.0),
+(2, 5, 4.0);
 
--- Carlos gosta de jogos focados em narrativa (Ativa RN3)
 INSERT INTO historico_avaliacoes (usuario_id, jogo_id, nota) VALUES
-(3, 9, 5.0), -- The Walking Dead
-(3, 10, 4.0); -- JoJo
-
--- Adicionando log de IA simulado para testar RN4 (Usuário 1 já fez 10 requisições na última hora, por exemplo, não adicionado aqui para permitir rodar o teste inicial)
+(3, 9, 5.0),
+(3, 10, 4.0);
